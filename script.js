@@ -44,18 +44,17 @@ console.log(typeof adaptive);
 // console.log((fullPrice * rollback) / 100);
 
 // конструкция условий
-// let n = fullPrice;
-// switch (n) {
-//   case n >= 30000:
+// switch (fullPrice) {
+//   case fullPrice >= 30000:
 //     console.log("Даем скидку в 10%");
 //     break;
-//   case n >= 15000 && n < 30000:
+//   case fullPrice >= 15000:
 //     console.log("Даем скидку в 5%");
 //     break;
-//   case n < 15000 && n > 0:
+//   case fullPrice >= 0:
 //     console.log("Скидка не предусмотрена");
 //     break;
-//   case n < 0:
+//   case fullPrice < 0:
 //     console.log("Что-то пошло не так");
 //     break;
 // }
