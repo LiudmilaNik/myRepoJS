@@ -60,13 +60,12 @@ console.log(typeof adaptive);
 //     break;
 // }
 
-let n = fullPrice;
-if (n >= 30000) {
+if (fullPrice >= 30000) {
   console.log("Даем скидку в 10%");
-} else if (n >= 15000 && n < 30000) {
+} else if (fullPrice >= 15000) {
   console.log("Даем скидку в 5%");
-} else if (n < 15000 && n > 0) {
+} else if (fullPrice >= 0) {
   console.log("Скидка не предусмотрена");
-} else if (n < 0) {
+} else {
   console.log("Что-то пошло не так");
 }
