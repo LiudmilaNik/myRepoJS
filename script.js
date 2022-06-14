@@ -11,9 +11,9 @@ const appData = {
   servicePersentPrice: 0,
   service1: "",
   service2: "",
-  // isNumber: function (num) {
-  //   return !isNaN(parseFloat(num)) && isFinite(num);
-  // },
+  isNumber: function (num) {
+    return !isNaN(parseFloat(num)) && isFinite(num);
+  },
 
   asking: function () {
     appData.title = prompt("Как называется ваш проект?", "Калькулятор верстки");
@@ -23,8 +23,8 @@ const appData = {
     );
 
     do {
-      appData.screenPrice = +prompt("Сколько будет стоить данная работа?");
-    } while (!isNumber(appData.screenPrice));
+      appData.screenPrice = prompt("Сколько будет стоить данная работа?");
+    } while (!appData.isNumber(appData.screenPrice));
 
     appData.adaptive = confirm("Нужен ли адаптив на сайте?");
   },
@@ -46,24 +46,12 @@ const appData = {
       }
 
       do {
-        servicePrice = +prompt("Сколько это будет стоить?");
-      } while (!isNumber(servicePrice));
+        servicePrice = prompt("Сколько это будет стоить?");
+      } while (!appData.isNumber(servicePrice));
 
-      sum += servicePrice;
+      sum += +servicePrice;
     }
     return sum;
-  },
-
-  getRollbackMessage: function (price) {
-    if (price >= 30000) {
-      return "Даем скидку в 10%";
-    } else if (price >= 15000 && price < 30000) {
-      return "Даем скидку в 5%";
-    } else if (price >= 0 && price < 15000) {
-      return "Скидка не предусмотрена";
-    } else {
-      return "Что-то пошло не так";
-    }
   },
   getFullPrice: function () {
     return +appData.screenPrice + appData.allServicePrices;
@@ -77,22 +65,40 @@ const appData = {
       appData.title.trim().substring(1).toLowerCase()
     );
   },
+
+  getRollbackMessage: function (price) {
+    if (price >= 30000) {
+      return "Даем скидку в 10%";
+    } else if (price >= 15000 && price < 30000) {
+      return "Даем скидку в 5%";
+    } else if (price >= 0 && price < 15000) {
+      return "Скидка не предусмотрена";
+    } else {
+      return "Что-то пошло не так";
+    }
+  },
+
   start: function () {
     appData.asking();
     appData.allServicePrices = appData.getAllServicePrices();
     appData.fullPrice = appData.getFullPrice();
     appData.servicePersentPrice = appData.getServicePercentPrices();
     appData.title = appData.getTitle();
+    appData.logger();
   },
+
   logger: function () {
     for (let key in appData) {
-      console.log(appData[key]);
+      console.log("ключ:" + key + " " + "Значение:" + appData[key]);
     }
   },
-};
 
-const isNumber = function (num) {
-  return !isNaN(parseFloat(num)) && isFinite(num);
+  // logger: function () {
+  //   for (let key in appData) {
+  //     console.log(appData[key]);
+  //   }
+  //
+  // },
 };
 
 appData.start();
