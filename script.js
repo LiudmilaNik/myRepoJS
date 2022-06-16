@@ -63,9 +63,15 @@ const appData = {
     appData.adaptive = confirm("Нужен ли адаптив на сайте?");
   },
   addPrices: function () {
-    for (let screen of appData.screens) {
-      appData.screenPrice += +screen.price;
-    }
+    // расчет стоимости экранов
+    // for (let screen of appData.screens) {
+    //   appData.screenPrice += +screen.price;
+    // }
+    appData.screenPrice = appData.screens.reduce(function (sum, screen) {
+      return (sum += +screen.price);
+    }, 0);
+
+    // расчет стоимости доп.услуг
     for (let key in appData.services) {
       appData.allServicePrices += appData.services[key];
     }
