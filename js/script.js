@@ -1,4 +1,32 @@
 "use strict";
+const title = document.getElementsByTagName("h1");
+console.log(title[0]);
+
+const handler = document.getElementsByClassName("handler_btn");
+console.log(handler);
+
+const screenBtn = document.querySelector(".screen-btn");
+console.log(screenBtn);
+
+const otherItemsPercent = document.querySelectorAll(".other-items.percent");
+console.log(otherItemsPercent);
+
+const otherItemsNumber = document.querySelectorAll(".other-items.number");
+console.log(otherItemsNumber);
+
+const inputTypeRange = document.querySelector(".rollback input[type=range]");
+console.log(inputTypeRange);
+
+const spanRangeValue = document.querySelector(".rollback span.range-value");
+console.log(spanRangeValue);
+
+const totalInput = document.getElementsByClassName("total-input");
+for (let key of totalInput) {
+  console.log(key);
+}
+
+let allScreen = document.querySelectorAll(".screen");
+console.log(screen);
 
 const appData = {
   title: "",
@@ -107,7 +135,7 @@ const appData = {
     console.log(appData.servicePersentPrice);
     console.log(appData.screens);
     console.log(appData.services);
-    console.log(appData.title);
+    // console.log(appData.title);
     // for (let key in appData) {
     //   console.log("ключ:" + key + " " + "Значение:" + appData[key]);
     // }
