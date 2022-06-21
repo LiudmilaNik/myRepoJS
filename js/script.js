@@ -1,7 +1,7 @@
 "use strict";
 
 const title = document.getElementsByTagName("h1")[0];
-const handler = document.getElementsByClassName("handler_btn")[0];
+const handler = document.getElementsByClassName("handler_btn");
 const screenBtn = document.querySelector(".screen-btn");
 const otherItemsPercent = document.querySelectorAll(".other-items.percent");
 const otherItemsNumber = document.querySelectorAll(".other-items.number");
