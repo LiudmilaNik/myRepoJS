@@ -17,9 +17,6 @@ const totalCountRollback = document.getElementsByClassName("total-input")[4];
 
 let screens = document.querySelectorAll(".screen");
 
-// let selects = document.querySelectorAll("select");
-// let inputs = document.querySelectorAll("input [type=text]");
-
 const appData = {
   title: "",
   screens: [],
@@ -34,39 +31,43 @@ const appData = {
   servicesNumber: {},
   init: function () {
     appData.addTitle();
-
-    // handlerDisabled: function () {
-    //   handler.disabled = true;
-    //   screens = document.querySelectorAll(".screen");
-
-    //   screens.forEach((screen) => {
-    //     const select = screen.querySelector("select");
-    //     const input = screen.querySelector("input");
-
-    //     select.addEventListener("input",appData.checkValues);
-    //     input.addEventListener("input",appData.checkValues);
-    //   });
-    // }
-    // checkValues: function () {
-    //   let isError = false;
-    //   screens.forEach((screen) => {
-    //     if (screen.value.trim() === " ") {
-    //         isError = true;
-    //         handler.disabled = true;
-    //       }
-    //         if (!isError) {
-    //         handler.disabled = false;
-    //         }
-    //   })
-    // }
-
     inputTypeRange.addEventListener("input", (e) => {
       spanRangeValue.textContent = inputTypeRange.value;
       appData.rollback = +inputTypeRange.value;
     }),
       handler.addEventListener("click", appData.start);
     screenBtn.addEventListener("click", appData.addScreenBlock);
+    appData.handlerDisabled();
   },
+  checkValues: function () {
+    const mainElement = document.querySelector(".main-controls__views");
+    const select = mainElement.querySelectorAll("select");
+    const input = mainElement.querySelectorAll("input");
+
+    handler.disabled = false;
+
+    const items = [...select, ...input];
+
+    items.forEach((item) => {
+      if (item.value == " ") {
+        handler.disabled = true;
+      }
+    });
+  },
+
+  handlerDisabled: function () {
+    handler.disabled = true;
+    screens = document.querySelectorAll(".screen");
+
+    screens.forEach((screen) => {
+      const select = screen.querySelector("select");
+      const input = screen.querySelector("input");
+
+      select.addEventListener("input", appData.checkValues);
+      input.addEventListener("input", appData.checkValues);
+    });
+  },
+
   addTitle: function () {
     document.title = title.textContent;
   },
@@ -88,9 +89,7 @@ const appData = {
     totalCountRollback.value = appData.servicePersentPrice;
     totalCount.value = +appData.input;
   },
-  // isNumber: function (num) {
-  //   return !isNaN(parseFloat(num)) && isFinite(num);
-  // },
+
   addScreens: function () {
     screens = document.querySelectorAll(".screen");
     screens.forEach(function (screen, index) {
