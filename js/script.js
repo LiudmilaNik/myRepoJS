@@ -21,6 +21,7 @@ const appData = {
   title: "",
   screens: [],
   screenPrice: 0,
+  screenNumber: 0,
   adaptive: true,
   rollback: 0,
   servicePricesPercent: 0,
@@ -35,7 +36,7 @@ const appData = {
       spanRangeValue.textContent = inputTypeRange.value;
       appData.rollback = +inputTypeRange.value;
     }),
-      handler.addEventListener("click", appData.start);
+      handler.addEventListener("click", appData.start, { once: true });
     screenBtn.addEventListener("click", appData.addScreenBlock);
     appData.handlerDisabled();
   },
@@ -49,7 +50,7 @@ const appData = {
     const items = [...select, ...input];
 
     items.forEach((item) => {
-      if (item.value == " ") {
+      if (item.value == "") {
         handler.disabled = true;
       }
     });
@@ -87,7 +88,7 @@ const appData = {
       appData.servicePricesPercent + appData.servicePricesNumber;
     fullTotalCount.value = appData.fullPrice;
     totalCountRollback.value = appData.servicePersentPrice;
-    totalCount.value = +appData.input;
+    totalCount.value = +appData.screenNumber;
   },
 
   addScreens: function () {
@@ -130,9 +131,15 @@ const appData = {
   addScreenBlock: function () {
     const cloneScreen = screens[0].cloneNode(true);
     screens[screens.length - 1].after(cloneScreen);
+    appData.handlerDisabled();
   },
 
   addPrices: function () {
+    // расчет количества экранов
+    for (let screen of appData.screens) {
+      appData.screenNumber += +screen.count;
+    }
+
     // расчет стоимости экранов
     for (let screen of appData.screens) {
       appData.screenPrice += +screen.price;
