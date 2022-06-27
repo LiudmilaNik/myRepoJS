@@ -40,12 +40,14 @@ const appData = {
       appData.rollback = +inputTypeRange.value;
     }),
       handler.addEventListener("click", appData.start);
+    // handler.addEventListener("click", this.start.bind(this));
     screenBtn.addEventListener("click", appData.addScreenBlock);
+    // screenBtn.addEventListener("click", this.addScreenBlock.bind(this));
     appData.handlerDisabled();
   },
 
   /*Запретить нажатие кнопки Рассчитать, если не заполнены Тип экранов и Количество экранов:*/
-  checkValues: function () {
+  checkValues: () => {
     const mainElement = document.querySelector(".main-controls__views");
     const select = mainElement.querySelectorAll("select");
     const input = mainElement.querySelectorAll("input");
@@ -61,7 +63,7 @@ const appData = {
     });
   },
 
-  handlerDisabled: function () {
+  handlerDisabled: () => {
     handler.disabled = true;
     screens = document.querySelectorAll(".screen");
 
@@ -74,11 +76,11 @@ const appData = {
     });
   },
 
-  addTitle: function () {
+  addTitle: () => {
     document.title = title.textContent;
   },
 
-  start: function () {
+  start: () => {
     appData.addScreens();
     appData.addServises();
     appData.addPrices();
@@ -88,7 +90,7 @@ const appData = {
   },
 
   /*вывод результатов Итого на экран:*/
-  showResult: function () {
+  showResult: () => {
     total.value = appData.screenPrice;
     totalCount.value = +appData.screenNumber;
     totalCountOther.value =
@@ -98,11 +100,11 @@ const appData = {
   },
 
   /*получение со страницы данных по экранам:*/
-  addScreens: function () {
+  addScreens: () => {
     /*переопределение коллекции перед каждым расчетом:*/
     screens = document.querySelectorAll(".screen");
 
-    screens.forEach(function (screen, index) {
+    screens.forEach((screen, index) => {
       const select = screen.querySelector("select");
       const input = screen.querySelector("input");
       const selectName = select.options[select.selectedIndex].textContent;
@@ -117,9 +119,9 @@ const appData = {
   },
 
   /*получение со страницы данных по доп.услугам:*/
-  addServises: function () {
+  addServises: () => {
     /*перебрать коллекцию otherItemsPercent, чтобы получить необходимые переменные:*/
-    otherItemsPercent.forEach(function (item) {
+    otherItemsPercent.forEach((item) => {
       const check = item.querySelector("input[type=checkbox]");
       const label = item.querySelector("label");
       const input = item.querySelector("input[type=text]");
@@ -130,7 +132,7 @@ const appData = {
       }
     });
     /*аналогично перебору по доп.услугам в %%:*/
-    otherItemsNumber.forEach(function (item) {
+    otherItemsNumber.forEach((item) => {
       const check = item.querySelector("input[type=checkbox]");
       const label = item.querySelector("label");
       const input = item.querySelector("input[type=text]");
@@ -141,7 +143,7 @@ const appData = {
     });
   },
   /*клонирование элементов screen:*/
-  addScreenBlock: function () {
+  addScreenBlock: () => {
     /*склонировать 1ый эл-т коллекции и поместить в переменную cloneScreen:*/
     const cloneScreen = screens[0].cloneNode(true);
     /*последний элемент коллекции поместить перед клонированным элементом: */
@@ -149,7 +151,7 @@ const appData = {
     appData.handlerDisabled();
   },
 
-  addPrices: function () {
+  addPrices: () => {
     /*расчет количества экранов:*/
     for (let screen of appData.screens) {
       appData.screenNumber += +screen.count;
@@ -182,7 +184,7 @@ const appData = {
       appData.fullPrice - appData.fullPrice * (appData.rollback / 100);
   },
 
-  logger: function () {
+  logger: () => {
     console.log(appData.fullPrice);
     console.log(appData.servicePersentPrice);
     console.log(appData.services);
