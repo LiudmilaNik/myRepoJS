@@ -2,6 +2,7 @@
 
 const title = document.getElementsByTagName("h1")[0];
 const handler = document.getElementsByClassName("handler_btn")[0];
+const handlerReset = document.getElementsByClassName("handler_btn")[1];
 const screenBtn = document.querySelector(".screen-btn");
 const otherItemsPercent = document.querySelectorAll(".other-items.percent");
 const otherItemsNumber = document.querySelectorAll(".other-items.number");
@@ -41,13 +42,14 @@ const appData = {
     }),
       handler.addEventListener("click", appData.start);
     // handler.addEventListener("click", this.start.bind(this));
+    handlerReset.addEventListener("click", appData.reset);
     screenBtn.addEventListener("click", appData.addScreenBlock);
     // screenBtn.addEventListener("click", this.addScreenBlock.bind(this));
     appData.handlerDisabled();
   },
 
   /*Запретить нажатие кнопки Рассчитать, если не заполнены Тип экранов и Количество экранов:*/
-  checkValues: () => {
+  checkValues: function () {
     const mainElement = document.querySelector(".main-controls__views");
     const select = mainElement.querySelectorAll("select");
     const input = mainElement.querySelectorAll("input");
@@ -63,7 +65,7 @@ const appData = {
     });
   },
 
-  handlerDisabled: () => {
+  handlerDisabled: function () {
     handler.disabled = true;
     screens = document.querySelectorAll(".screen");
 
@@ -76,21 +78,87 @@ const appData = {
     });
   },
 
-  addTitle: () => {
+  /*блокировка экранов после клика на Расчитать*/
+  screensDisabled: function () {
+    const mainElement = document.querySelector(".main-controls__views");
+    const select = mainElement.querySelectorAll("select");
+    const input = mainElement.querySelectorAll("input");
+
+    const items = [...select, ...input];
+
+    items.forEach((item) => {
+      item.disabled = true;
+    });
+  },
+
+  /*разблокировка экранов*/
+  screensIncluded: function () {
+    const mainElement = document.querySelector(".main-controls__views");
+    const select = mainElement.querySelectorAll("select");
+    const input = mainElement.querySelectorAll("input");
+
+    const items = [...select, ...input];
+
+    items.forEach((item) => {
+      item.disabled = false;
+    });
+  },
+
+  /*удаление клонированных экранов*/
+  clearSkreenBlock: function () {
+    const mainElement = document.querySelector(".main-controls__views");
+    const select = mainElement.querySelectorAll("select");
+    const input = mainElement.querySelectorAll("input");
+
+    const items = [...select, ...input];
+
+    items.forEach((item, i) => {
+      if (i !== 0) {
+        item.splice();
+      }
+    });
+  },
+
+  addTitle: function () {
     document.title = title.textContent;
   },
 
-  start: () => {
+  /*после клика на Рассчитать кнопка заменяется на Сброс*/
+  handlerChange: function () {
+    handler.style = "display:none";
+    handlerReset.style = "display:block;";
+  },
+  /*после клика на Сброс кнопка заменяется на Рассчитать*/
+  handlerChange2: function () {
+    handler.style = "display:block";
+    handlerReset.style = "display:none";
+  },
+
+  start: function () {
     appData.addScreens();
     appData.addServises();
     appData.addPrices();
     // appData.getServicePercentPrices();
     appData.showResult();
+    appData.screensDisabled();
+    appData.handlerChange();
     // appData.handlerDisabled();
   },
 
+  reset: function () {
+    appData.handlerChange2();
+    appData.screensIncluded();
+    appData.clearResult();
+    appData.clearScreens();
+    appData.clearCheckServises();
+    appData.clearSkreenBlock();
+    appData.handler.removeAttribute("disabled");
+    appData.inputTypeRange.disabled = false;
+    appData.init();
+  },
+
   /*вывод результатов Итого на экран:*/
-  showResult: () => {
+  showResult: function () {
     total.value = appData.screenPrice;
     totalCount.value = +appData.screenNumber;
     totalCountOther.value =
@@ -99,8 +167,17 @@ const appData = {
     totalCountRollback.value = appData.servicePersentPrice;
   },
 
+  /*очистка результатов*/
+  clearResult: function () {
+    total.value = "0";
+    totalCount.value = "0";
+    totalCountOther.value = "0";
+    fullTotalCount.value = "0";
+    totalCountRollback.value = "0";
+  },
+
   /*получение со страницы данных по экранам:*/
-  addScreens: () => {
+  addScreens: function () {
     /*переопределение коллекции перед каждым расчетом:*/
     screens = document.querySelectorAll(".screen");
 
@@ -118,8 +195,18 @@ const appData = {
     console.log(appData.screens);
   },
 
+  /*oчистка экранов*/
+  clearScreens: function () {
+    screens.forEach((screen, index) => {
+      const select = screen.querySelector("select");
+      const input = screen.querySelector("input");
+
+      select.value = "";
+      input.value = "";
+    });
+  },
   /*получение со страницы данных по доп.услугам:*/
-  addServises: () => {
+  addServises: function () {
     /*перебрать коллекцию otherItemsPercent, чтобы получить необходимые переменные:*/
     otherItemsPercent.forEach((item) => {
       const check = item.querySelector("input[type=checkbox]");
@@ -142,8 +229,17 @@ const appData = {
       }
     });
   },
+
+  /*удаление чекбоксов*/
+  clearCheckServises: function () {
+    const checks = document.querySelectorAll("input[type=checkbox]");
+    checks.forEach((check) => {
+      check.checked = false;
+    });
+  },
+
   /*клонирование элементов screen:*/
-  addScreenBlock: () => {
+  addScreenBlock: function () {
     /*склонировать 1ый эл-т коллекции и поместить в переменную cloneScreen:*/
     const cloneScreen = screens[0].cloneNode(true);
     /*последний элемент коллекции поместить перед клонированным элементом: */
@@ -151,7 +247,7 @@ const appData = {
     appData.handlerDisabled();
   },
 
-  addPrices: () => {
+  addPrices: function () {
     /*расчет количества экранов:*/
     for (let screen of appData.screens) {
       appData.screenNumber += +screen.count;
@@ -184,7 +280,7 @@ const appData = {
       appData.fullPrice - appData.fullPrice * (appData.rollback / 100);
   },
 
-  logger: () => {
+  logger: function () {
     console.log(appData.fullPrice);
     console.log(appData.servicePersentPrice);
     console.log(appData.services);
