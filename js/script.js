@@ -200,12 +200,10 @@ const appData = {
     appData.addScreens();
     appData.addServises();
     appData.addPrices();
-    // appData.getServicePercentPrices();
     appData.showResult();
     appData.screensDisabled();
     appData.showStart();
     appData.logger();
-    // appData.handlerDisabled();
   },
 
   /*Блок Сброс*/
@@ -259,17 +257,23 @@ const appData = {
 
   /*очистка результатов*/
   clearResult: function () {
+    appData.title = "";
+    appData.screens = [];
     appData.screenPrice = 0;
     appData.screenNumber = 0;
+    appData.adaptive = false;
+    appData.rollback = 0;
     appData.servicePricesPercent = 0;
     appData.servicePricesNumber = 0;
     appData.fullPrice = 0;
     appData.servicePersentPrice = 0;
-    total.value = "0";
-    totalCount.value = "0";
-    totalCountOther.value = "0";
-    fullTotalCount.value = "0";
-    totalCountRollback.value = "0";
+    appData.servicesPersent = {};
+    appData.servicesNumber = {};
+    // total.value = "0";
+    // totalCount.value = "0";
+    // totalCountOther.value = "0";
+    // fullTotalCount.value = "0";
+    // totalCountRollback.value = "0";
   },
 
   reset: function () {
@@ -292,7 +296,7 @@ const appData = {
     console.log(appData.servicePricesPercent);
     console.log(appData.servicePricesNumber);
     console.log(appData.fullPrice);
-    console.log(appData.servicePersentPrice);
+    // console.log(appData.servicePersentPrice);
     // console.log(appData.screens);
     // console.log(appData.fullPrice);
     // console.log(appData.servicePersentPrice);
