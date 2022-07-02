@@ -269,11 +269,11 @@ const appData = {
     appData.servicePersentPrice = 0;
     appData.servicesPersent = {};
     appData.servicesNumber = {};
-    // total.value = "0";
-    // totalCount.value = "0";
-    // totalCountOther.value = "0";
-    // fullTotalCount.value = "0";
-    // totalCountRollback.value = "0";
+    total.value = "";
+    totalCount.value = "";
+    totalCountOther.value = "";
+    fullTotalCount.value = "";
+    totalCountRollback.value = "";
   },
 
   reset: function () {
@@ -287,7 +287,6 @@ const appData = {
     inputTypeRange.value = 0;
     spanRangeValue.textContent = "0";
     appData.logger();
-    appData.init();
   },
 
   logger: function () {
@@ -296,11 +295,6 @@ const appData = {
     console.log(appData.servicePricesPercent);
     console.log(appData.servicePricesNumber);
     console.log(appData.fullPrice);
-    // console.log(appData.servicePersentPrice);
-    // console.log(appData.screens);
-    // console.log(appData.fullPrice);
-    // console.log(appData.servicePersentPrice);
-    // console.log(appData.services);
   },
 };
 appData.init();
