@@ -32,7 +32,7 @@ const appData = {
   servicesPersent: {} /*объект доп.услуг в %%*/,
   servicesNumber: {} /*объект доп.услуг в руб*/,
   init: function () {
-    appData.addTitle();
+    this.addTitle();
 
     /*описание работы ползунка:*/
     inputTypeRange.addEventListener("input", (e) => {
@@ -40,10 +40,10 @@ const appData = {
         inputTypeRange.value; /*значение под ползунком*/
       appData.rollback = +inputTypeRange.value;
     }),
-      handler.addEventListener("click", appData.start);
+      handler.addEventListener("click", this.start);
     // handler.addEventListener("click", this.start.bind(this));
-    handlerReset.addEventListener("click", appData.reset);
-    screenBtn.addEventListener("click", appData.addScreenBlock);
+    handlerReset.addEventListener("click", this.reset);
+    screenBtn.addEventListener("click", this.addScreenBlock);
     // screenBtn.addEventListener("click", this.addScreenBlock.bind(this));
     appData.handlerDisabled();
   },
@@ -73,8 +73,8 @@ const appData = {
       const select = screen.querySelector("select");
       const input = screen.querySelector("input");
 
-      select.addEventListener("input", appData.checkValues);
-      input.addEventListener("input", appData.checkValues);
+      select.addEventListener("input", this.checkValues);
+      input.addEventListener("input", this.checkValues);
     });
   },
 
@@ -132,7 +132,7 @@ const appData = {
 
       /*проверка: если выбран чекбокс, то значение инпута попадает в servicesPersent по ключу label.textContent:*/
       if (check.checked) {
-        appData.servicesPersent[label.textContent] = +input.value;
+        this.servicesPersent[label.textContent] = +input.value;
       }
     });
     /*аналогично перебору по доп.услугам в %%:*/
@@ -142,52 +142,50 @@ const appData = {
       const input = item.querySelector("input[type=text]");
 
       if (check.checked) {
-        appData.servicesNumber[label.textContent] = +input.value;
+        this.servicesNumber[label.textContent] = +input.value;
       }
     });
   },
 
   addPrices: function () {
     /*расчет количества экранов:*/
-    for (let screen of appData.screens) {
-      appData.screenNumber += +screen.count;
+    for (let screen of this.screens) {
+      this.screenNumber += +screen.count;
     }
 
     /*расчет стоимости экранов:*/
-    for (let screen of appData.screens) {
-      appData.screenPrice += +screen.price;
+    for (let screen of this.screens) {
+      this.screenPrice += +screen.price;
     }
     // appData.screenPrice = appData.screens.reduce(function (sum, screen) {
     //   return (sum += +screen.price);
     // }, 0);
 
     /*расчет стоимости доп.услуг:*/
-    for (let key in appData.servicesNumber) {
-      appData.servicePricesNumber += appData.servicesNumber[key];
+    for (let key in this.servicesNumber) {
+      this.servicePricesNumber += this.servicesNumber[key];
     }
-    for (let key in appData.servicesPersent) {
-      appData.servicePricesPercent +=
-        appData.screenPrice * (appData.servicesPersent[key] / 100);
+    for (let key in this.servicesPersent) {
+      this.servicePricesPercent +=
+        this.screenPrice * (this.servicesPersent[key] / 100);
     }
     /*расчет стоимости экранов с учетом доп.услуг:*/
-    appData.fullPrice =
-      +appData.screenPrice +
-      appData.servicePricesNumber +
-      appData.servicePricesPercent;
+    this.fullPrice =
+      +this.screenPrice + this.servicePricesNumber + this.servicePricesPercent;
 
     /*расчет стоимости с учетом отката:*/
-    appData.servicePersentPrice =
-      appData.fullPrice - appData.fullPrice * (appData.rollback / 100);
+    this.servicePersentPrice =
+      this.fullPrice - this.fullPrice * (this.rollback / 100);
   },
 
   /*вывод результатов Итого на экран:*/
   showResult: function () {
-    total.value = appData.screenPrice;
-    totalCount.value = +appData.screenNumber;
+    total.value = this.screenPrice;
+    totalCount.value = +this.screenNumber;
     totalCountOther.value =
-      appData.servicePricesPercent + appData.servicePricesNumber;
-    fullTotalCount.value = appData.fullPrice;
-    totalCountRollback.value = appData.servicePersentPrice;
+      appData.servicePricesPercent + this.servicePricesNumber;
+    fullTotalCount.value = this.fullPrice;
+    totalCountRollback.value = this.servicePersentPrice;
   },
 
   /*после клика на Рассчитать кнопка заменяется на Сброс*/
@@ -257,18 +255,18 @@ const appData = {
 
   /*очистка результатов*/
   clearResult: function () {
-    appData.title = "";
-    appData.screens = [];
-    appData.screenPrice = 0;
-    appData.screenNumber = 0;
-    appData.adaptive = false;
-    appData.rollback = 0;
-    appData.servicePricesPercent = 0;
-    appData.servicePricesNumber = 0;
-    appData.fullPrice = 0;
-    appData.servicePersentPrice = 0;
-    appData.servicesPersent = {};
-    appData.servicesNumber = {};
+    this.title = "";
+    this.screens = [];
+    this.screenPrice = 0;
+    this.screenNumber = 0;
+    this.adaptive = false;
+    this.rollback = 0;
+    this.servicePricesPercent = 0;
+    this.servicePricesNumber = 0;
+    this.fullPrice = 0;
+    this.servicePersentPrice = 0;
+    this.servicesPersent = {};
+    this.servicesNumber = {};
     total.value = "";
     totalCount.value = "";
     totalCountOther.value = "";
@@ -284,17 +282,18 @@ const appData = {
     appData.clearSkreenBlock();
     appData.clearResult();
     handler.removeAttribute("disabled");
+    screens = document.querySelectorAll(".screen");
     inputTypeRange.value = 0;
     spanRangeValue.textContent = "0";
     appData.logger();
   },
 
   logger: function () {
-    console.log(appData.screenPrice);
-    console.log(appData.screenNumber);
-    console.log(appData.servicePricesPercent);
-    console.log(appData.servicePricesNumber);
-    console.log(appData.fullPrice);
+    console.log(this.screenPrice);
+    console.log(this.screenNumber);
+    console.log(this.servicePricesPercent);
+    console.log(this.servicePricesNumber);
+    console.log(this.fullPrice);
   },
 };
 appData.init();
